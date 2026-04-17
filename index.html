@@ -1,0 +1,1500 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CS Mastery Roadmap — Compilers, PL Theory & Systems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #1c1917;
+        --ink2: #44403c;
+        --ink3: #78716c;
+        --paper: #fafaf9;
+        --paper2: #f5f5f4;
+        --paper3: #e7e5e4;
+        --accent: #2563eb;
+        --accent2: #7c3aed;
+        --accent3: #0891b2;
+        --gold: #d97706;
+        --red: #dc2626;
+        --green: #16a34a;
+        --rule: #d6d3d1;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.7;
+        font-size: 16px;
+      }
+
+      /* ── NOISE TEXTURE OVERLAY ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        position: relative;
+        padding: 100px 24px 80px;
+        text-align: center;
+        border-bottom: 1px solid var(--rule);
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--paper3) 1px, transparent 1px),
+          linear-gradient(90deg, var(--paper3) 1px, transparent 1px);
+        background-size: 40px 40px;
+        opacity: 0.6;
+      }
+
+      .hero-glow {
+        position: absolute;
+        top: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 300px;
+        background: radial-gradient(
+          ellipse,
+          rgba(37, 99, 235, 0.08) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        position: relative;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .hero-eyebrow {
+        display: inline-block;
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: rgba(37, 99, 235, 0.07);
+        border: 1px solid rgba(37, 99, 235, 0.18);
+        padding: 4px 14px;
+        border-radius: 99px;
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        font-family: "Lora", serif;
+        font-size: clamp(2.4rem, 5vw, 3.8rem);
+        font-weight: 700;
+        line-height: 1.15;
+        color: var(--ink);
+        margin-bottom: 20px;
+        letter-spacing: -0.02em;
+      }
+
+      .hero h1 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+
+      .hero-sub {
+        font-size: 1.1rem;
+        color: var(--ink2);
+        max-width: 600px;
+        margin: 0 auto 36px;
+        font-weight: 300;
+        line-height: 1.8;
+      }
+
+      .hero-meta {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+
+      .hero-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+      }
+
+      .hero-stat-num {
+        font-family: "Lora", serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1;
+      }
+
+      .hero-stat-label {
+        font-size: 0.78rem;
+        color: var(--ink3);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .hero-divider {
+        width: 1px;
+        height: 40px;
+        background: var(--rule);
+        align-self: center;
+      }
+
+      /* ── PHILOSOPHY BLOCK ── */
+      .philosophy {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 0 24px;
+      }
+
+      .section-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10.5px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink3);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--rule);
+      }
+
+      .rules-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .rule-card {
+        background: #fff;
+        border: 1px solid var(--rule);
+        border-radius: 12px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .rule-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: var(--accent);
+      }
+
+      .rule-num {
+        font-family: "Lora", serif;
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: var(--paper3);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .rule-card h3 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+
+      .rule-card p {
+        font-size: 0.88rem;
+        color: var(--ink2);
+        line-height: 1.6;
+      }
+
+      /* ── OVERVIEW TABLE ── */
+      .overview {
+        max-width: 900px;
+        margin: 0 auto 60px;
+        padding: 0 24px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border-radius: 12px;
+        border: 1px solid var(--rule);
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        background: #fff;
+      }
+
+      thead th {
+        background: var(--ink);
+        color: #fff;
+        font-weight: 500;
+        font-size: 0.8rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 14px 20px;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      thead th:first-child {
+        border-radius: 12px 0 0 0;
+      }
+      thead th:last-child {
+        border-radius: 0 12px 0 0;
+      }
+
+      tbody tr {
+        border-bottom: 1px solid var(--paper3);
+      }
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+      tbody tr:nth-child(even) td {
+        background: var(--paper);
+      }
+
+      tbody td {
+        padding: 13px 20px;
+        color: var(--ink2);
+        vertical-align: top;
+      }
+
+      .phase-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.8rem;
+        font-weight: 500;
+        background: var(--paper2);
+        color: var(--ink);
+      }
+
+      .phase-badge.star {
+        background: rgba(124, 58, 237, 0.1);
+        color: var(--accent2);
+      }
+
+      td strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .weeks-chip {
+        display: inline-block;
+        font-family: "DM Mono", monospace;
+        font-size: 0.78rem;
+        background: var(--paper2);
+        border: 1px solid var(--rule);
+        border-radius: 99px;
+        padding: 2px 10px;
+        color: var(--ink2);
+        white-space: nowrap;
+      }
+
+      /* ── PHASES ── */
+      .phases {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+      }
+
+      .phase {
+        background: #fff;
+        border: 1px solid var(--rule);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
+      }
+
+      .phase.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .phase-header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 20px;
+        padding: 28px 32px;
+        border-bottom: 1px solid var(--rule);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .phase-header:hover {
+        background: var(--paper);
+      }
+
+      .phase-number {
+        font-family: "Lora", serif;
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--paper3);
+        min-width: 52px;
+      }
+
+      .phase-title-group {
+      }
+
+      .phase-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 4px;
+      }
+
+      .phase-title {
+        font-family: "Lora", serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.2;
+      }
+
+      .phase-weeks {
+        font-family: "DM Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--ink3);
+        background: var(--paper2);
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        padding: 6px 12px;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .phase-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: var(--paper2);
+        color: var(--ink3);
+        font-size: 1rem;
+        transition: transform 0.25s;
+        flex-shrink: 0;
+      }
+
+      .phase.open .phase-toggle {
+        transform: rotate(180deg);
+      }
+
+      .phase-body {
+        display: none;
+        padding: 32px;
+        gap: 28px;
+        flex-direction: column;
+        border-top: 1px solid var(--paper2);
+      }
+
+      .phase.open .phase-body {
+        display: flex;
+      }
+
+      /* accent bar on left of phase */
+      .phase[data-ph="0"] .phase-header {
+        border-left: 4px solid #3b82f6;
+      }
+      .phase[data-ph="1"] .phase-header {
+        border-left: 4px solid #8b5cf6;
+      }
+      .phase[data-ph="2"] .phase-header {
+        border-left: 4px solid #06b6d4;
+      }
+      .phase[data-ph="3"] .phase-header {
+        border-left: 4px solid #7c3aed;
+      }
+      .phase[data-ph="4"] .phase-header {
+        border-left: 4px solid #d97706;
+      }
+      .phase[data-ph="5"] .phase-header {
+        border-left: 4px solid #16a34a;
+      }
+
+      .phase-section-title {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink3);
+        margin-bottom: 10px;
+      }
+
+      .goal-box {
+        background: var(--paper);
+        border-radius: 10px;
+        padding: 18px 20px;
+        border-left: 3px solid var(--accent);
+      }
+
+      .goal-box p {
+        font-size: 0.95rem;
+        color: var(--ink2);
+        line-height: 1.7;
+      }
+
+      .question-box {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 18px;
+        background: rgba(37, 99, 235, 0.04);
+        border: 1px solid rgba(37, 99, 235, 0.14);
+        border-radius: 10px;
+      }
+
+      .question-icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .question-box p {
+        font-family: "Lora", serif;
+        font-style: italic;
+        font-size: 1rem;
+        color: var(--ink);
+        line-height: 1.6;
+      }
+
+      .resources-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .resource-item {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        background: #fff;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .resource-item:hover {
+        border-color: var(--accent);
+        box-shadow: 0 2px 10px rgba(37, 99, 235, 0.08);
+      }
+
+      .resource-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+        background: var(--paper2);
+      }
+
+      .resource-text {
+        flex: 1;
+      }
+
+      .resource-text strong {
+        display: block;
+        font-size: 0.93rem;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 2px;
+      }
+
+      .resource-text span {
+        font-size: 0.85rem;
+        color: var(--ink3);
+        line-height: 1.5;
+      }
+
+      .resource-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 5px;
+        font-size: 0.82rem;
+        color: var(--accent);
+        text-decoration: none;
+        font-family: "DM Mono", monospace;
+      }
+
+      .resource-link:hover {
+        text-decoration: underline;
+      }
+
+      .project-box {
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.04),
+          rgba(37, 99, 235, 0.04)
+        );
+        border: 1px solid rgba(124, 58, 237, 0.18);
+        border-radius: 10px;
+        padding: 18px 20px;
+      }
+
+      .project-box p {
+        font-size: 0.93rem;
+        color: var(--ink2);
+        line-height: 1.7;
+      }
+
+      .outcomes-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .outcome-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        font-size: 0.9rem;
+        color: var(--ink2);
+      }
+
+      .outcome-item::before {
+        content: "→";
+        color: var(--accent2);
+        font-weight: 600;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* ── PRACTICAL NOTE ── */
+      .start-here {
+        max-width: 900px;
+        margin: 0 auto 80px;
+        padding: 0 24px;
+      }
+
+      .start-card {
+        background: var(--ink);
+        color: #fff;
+        border-radius: 16px;
+        padding: 40px 44px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .start-card::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.25),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .start-card h2 {
+        font-family: "Lora", serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #fff;
+      }
+
+      .start-card p {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.72);
+        margin-bottom: 24px;
+        line-height: 1.7;
+        max-width: 560px;
+      }
+
+      .start-items {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .start-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 14px 18px;
+        flex: 1;
+        min-width: 220px;
+        text-decoration: none;
+        color: inherit;
+        transition: background 0.2s;
+      }
+
+      .start-item:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      .start-item-icon {
+        font-size: 1.4rem;
+      }
+
+      .start-item-text strong {
+        display: block;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 2px;
+      }
+
+      .start-item-text span {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        text-align: center;
+        padding: 32px 24px;
+        border-top: 1px solid var(--rule);
+        font-size: 0.82rem;
+        color: var(--ink3);
+        font-family: "DM Mono", monospace;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 640px) {
+        .rules-grid {
+          grid-template-columns: 1fr;
+        }
+        .phase-header {
+          grid-template-columns: auto 1fr;
+        }
+        .phase-weeks {
+          display: none;
+        }
+        .start-card {
+          padding: 28px 24px;
+        }
+        .phase-body {
+          padding: 24px;
+        }
+      }
+
+      /* ── ANIMATIONS ── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero-inner > * {
+        animation: fadeUp 0.6s ease both;
+      }
+
+      .hero-eyebrow {
+        animation-delay: 0.05s;
+      }
+      .hero h1 {
+        animation-delay: 0.15s;
+      }
+      .hero-sub {
+        animation-delay: 0.25s;
+      }
+      .hero-meta {
+        animation-delay: 0.35s;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-inner">
+        <div class="hero-eyebrow">Personal Learning Roadmap</div>
+        <h1>From CS Graduate to<br /><em>Systems & PL Mastery</em></h1>
+        <p class="hero-sub">
+          A structured, project-driven path through Computer Architecture,
+          Operating Systems, Compilers, Programming Language Theory, and
+          Runtimes — built for deep understanding, not surface familiarity.
+        </p>
+        <div class="hero-meta">
+          <div class="hero-stat">
+            <span class="hero-stat-num">6</span>
+            <span class="hero-stat-label">Phases</span>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">18–24</span>
+            <span class="hero-stat-label">Months</span>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">1–2 hrs</span>
+            <span class="hero-stat-label">Per Day</span>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">6</span>
+            <span class="hero-stat-label">Projects</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy">
+      <div class="section-label">Core Philosophy</div>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-num">01</div>
+          <h3>Depth before breadth</h3>
+          <p>
+            Nothing moves forward until the current phase is solid. This is a
+            dependency graph, not a checklist. Rushing is why courses don't
+            click.
+          </p>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">02</div>
+          <h3>Every concept gets a project</h3>
+          <p>
+            Reading without building leaves knowledge brittle. Python is your
+            implementation language throughout every phase.
+          </p>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">02</div>
+          <h3>Every concept gets a project</h3>
+          <p>
+            Reading without building leaves knowledge brittle. Python is your
+            implementation language throughout every phase.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW TABLE -->
+    <section class="overview">
+      <div class="section-label">Roadmap at a Glance</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Topic</th>
+              <th>Duration</th>
+              <th>Key Project</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="phase-badge">0</span></td>
+              <td><strong>How Computers Work</strong></td>
+              <td><span class="weeks-chip">4–6 wks</span></td>
+              <td>nand2tetris Part I</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge">1</span></td>
+              <td><strong>Operating Systems</strong></td>
+              <td><span class="weeks-chip">6–8 wks</span></td>
+              <td>Shell in Python / C</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge">2</span></td>
+              <td><strong>C & Systems Programming</strong></td>
+              <td><span class="weeks-chip">4–6 wks</span></td>
+              <td>Memory Allocator</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge star">3★</span></td>
+              <td><strong>Compilers — The Heart</strong></td>
+              <td><span class="weeks-chip">10–14 wks</span></td>
+              <td>Crafting Interpreters (full)</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge">4</span></td>
+              <td><strong>PL Theory</strong></td>
+              <td><span class="weeks-chip">8–10 wks</span></td>
+              <td>Type Checker + HM Inference</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge">5</span></td>
+              <td><strong>Runtimes & Ecosystem</strong></td>
+              <td><span class="weeks-chip">6–8 wks</span></td>
+              <td>GC + FFI Bridge</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PHASES -->
+    <section class="phases">
+      <div class="section-label" style="margin-bottom: 0">
+        Detailed Phase Breakdown — click any phase to expand
+      </div>
+
+      <!-- PHASE 0 -->
+      <div class="phase" data-ph="0">
+        <div class="phase-header" onclick="togglePhase(this)">
+          <div class="phase-number">0</div>
+          <div class="phase-title-group">
+            <div class="phase-tag">Foundation</div>
+            <div class="phase-title">Regrounding — How Computers Work</div>
+          </div>
+          <div class="phase-weeks">4–6 weeks</div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-section-title">Goal</div>
+            <div class="goal-box">
+              <p>
+                Reconstruct the mental model of how a computer actually works,
+                end to end. This is the substrate everything else sits on.
+                Without this, every upstream concept floats without an anchor.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Central Question</div>
+            <div class="question-box">
+              <span class="question-icon">❓</span>
+              <p>What is actually happening when code runs?</p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Resources</div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <div class="resource-icon">📖</div>
+                <div class="resource-text">
+                  <strong>Code by Charles Petzold</strong>
+                  <span
+                    >Reads like a story. Builds a computer from first principles
+                    — electricity → logic gates → CPU. Closes more gaps than a
+                    semester course. A cheap used copy is perfect.</span
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">🖥️</div>
+                <div class="resource-text">
+                  <strong>nand2tetris — From NAND to Tetris</strong>
+                  <span
+                    >Free course. You build a complete computer from logic gates
+                    up to a running program. Do Part I (hardware, Chapters 1–6).
+                    Makes ARM/x86 make sense permanently.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://www.nand2tetris.org"
+                    target="_blank"
+                    >↗ nand2tetris.org (free)</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Project</div>
+            <div class="project-box">
+              <p>
+                Complete nand2tetris Part I (Chapters 1–6). By the end you will
+                have built an ALU, CPU, and memory unit from scratch in a
+                hardware simulator. This makes computer architecture permanently
+                concrete.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 1 -->
+      <div class="phase" data-ph="1">
+        <div class="phase-header" onclick="togglePhase(this)">
+          <div class="phase-number">1</div>
+          <div class="phase-title-group">
+            <div class="phase-tag">Systems</div>
+            <div class="phase-title">Operating Systems</div>
+          </div>
+          <div class="phase-weeks">6–8 weeks</div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-section-title">Goal</div>
+            <div class="goal-box">
+              <p>
+                Solidify processes, threads, memory, and system calls — topics
+                you already showed genuine interest in. Your reading on threads
+                and coroutines will make this feel like coming home. The
+                concurrency section will finally make coroutines make complete
+                mechanical sense.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Central Question</div>
+            <div class="question-box">
+              <span class="question-icon">❓</span>
+              <p>
+                How does the OS manage running programs, and how does my code
+                interact with hardware through it?
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Resources</div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <div class="resource-icon">📗</div>
+                <div class="resource-text">
+                  <strong>Operating Systems: Three Easy Pieces (OSTEP)</strong>
+                  <span
+                    >Free online. Best modern OS textbook, written with a
+                    clarity the Dragon Book lacks. Covers virtualisation,
+                    concurrency, and persistence. Read it top to bottom.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://pages.cs.wisc.edu/~remzi/OSTEP/"
+                    target="_blank"
+                    >↗ ostep.org (free)</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Project</div>
+            <div class="project-box">
+              <p>
+                Write a small shell in Python or C: fork processes, handle
+                signals, implement piping. Deceptively simple; teaches
+                everything about how the OS actually works from the user's
+                perspective.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase" data-ph="2">
+        <div class="phase-header" onclick="togglePhase(this)">
+          <div class="phase-number">2</div>
+          <div class="phase-title-group">
+            <div class="phase-tag">Systems</div>
+            <div class="phase-title">C & Systems Programming</div>
+          </div>
+          <div class="phase-weeks">4–6 weeks</div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-section-title">Goal</div>
+            <div class="goal-box">
+              <p>
+                You need C — not to master it, but to read it fluently. The
+                Flutter engine, most runtimes, and every OS are written in
+                C/C++. You cannot read source code in this domain without it.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Central Question</div>
+            <div class="question-box">
+              <span class="question-icon">❓</span>
+              <p>What does memory actually look like, and what is a pointer?</p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Resources</div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <div class="resource-icon">📕</div>
+                <div class="resource-text">
+                  <strong
+                    >The C Programming Language — Kernighan & Ritchie
+                    (K&R)</strong
+                  >
+                  <span
+                    >Short, dense, canonical. Written by C's creators. Read it
+                    cover to cover and do every exercise. This is the definitive
+                    source.</span
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">📘</div>
+                <div class="resource-text">
+                  <strong
+                    >CS:APP — Computer Systems: A Programmer's
+                    Perspective</strong
+                  >
+                  <span
+                    >Chapters 1–3 for assembly and memory layout. Makes the gap
+                    between C and machine code completely visible.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://csapp.cs.cmu.edu"
+                    target="_blank"
+                    >↗ csapp.cs.cmu.edu</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Project</div>
+            <div class="project-box">
+              <p>
+                Rewrite your Phase 1 shell in C, then write a memory allocator
+                (malloc/free from scratch). This makes garbage collection and
+                runtime memory management permanently clear — you'll never
+                wonder how a GC works again.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase" data-ph="3">
+        <div class="phase-header" onclick="togglePhase(this)">
+          <div class="phase-number">3★</div>
+          <div class="phase-title-group">
+            <div class="phase-tag">Core Domain — The Heart of This Roadmap</div>
+            <div class="phase-title">Compilers</div>
+          </div>
+          <div class="phase-weeks">10–14 weeks</div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-section-title">Goal</div>
+            <div class="goal-box">
+              <p>
+                This is the core domain. By now your OS and architecture
+                knowledge makes every step of compilation land properly. You
+                will understand why each stage of the pipeline exists, not just
+                what it does.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Central Question</div>
+            <div class="question-box">
+              <span class="question-icon">❓</span>
+              <p>How does text become a running program?</p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Resources — do in this order</div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <div class="resource-icon">🥇</div>
+                <div class="resource-text">
+                  <strong>1. Crafting Interpreters — Robert Nystrom</strong>
+                  <span
+                    >Start here. You build two complete interpreters for a real
+                    language (Lox): one tree-walking, one bytecode VM. The best
+                    compiler book written in the last 20 years. Free
+                    online.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://craftinginterpreters.com"
+                    target="_blank"
+                    >↗ craftinginterpreters.com (free)</a
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">📙</div>
+                <div class="resource-text">
+                  <strong>2. Engineering a Compiler — Cooper & Torczon</strong>
+                  <span
+                    >After Crafting Interpreters, for the formal/academic
+                    treatment: CFGs, register allocation, SSA form, optimisation
+                    passes. More approachable than the Dragon Book.</span
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">🐉</div>
+                <div class="resource-text">
+                  <strong>3. The Dragon Book — Aho, Lam, Sethi & Ullman</strong>
+                  <span
+                    >Use as a reference, not a primary read. Encyclopedic, not
+                    pedagogical. It earns its place on your shelf after you've
+                    done the above two.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">
+              What You'll Understand After This Phase
+            </div>
+            <div class="outcomes-list">
+              <div class="outcome-item">
+                Lexing, parsing, and AST construction
+              </div>
+              <div class="outcome-item">Scope, binding, and type checking</div>
+              <div class="outcome-item">IR design and optimisation passes</div>
+              <div class="outcome-item">Bytecode VMs and AOT compilation</div>
+              <div class="outcome-item">
+                Why Dart has both a VM (debug mode) and AOT (release mode) —
+                completely transparent
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Project</div>
+            <div class="project-box">
+              <p>
+                Finish both parts of Crafting Interpreters (the book guides you
+                step by step). Then extend Lox with one feature of your own
+                design — a new type, a new control structure, or a small
+                standard library. This is where deep understanding is confirmed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 4 -->
+      <div class="phase" data-ph="4">
+        <div class="phase-header" onclick="togglePhase(this)">
+          <div class="phase-number">4</div>
+          <div class="phase-title-group">
+            <div class="phase-tag">Theory</div>
+            <div class="phase-title">Programming Language Theory</div>
+          </div>
+          <div class="phase-weeks">8–10 weeks</div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-section-title">Goal</div>
+            <div class="goal-box">
+              <p>
+                The theoretical underpinning of everything above: type systems,
+                formal semantics, what "correct" means mathematically. This is
+                where you stop taking language design decisions on faith.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Central Question</div>
+            <div class="question-box">
+              <span class="question-icon">❓</span>
+              <p>
+                Why are languages designed the way they are, and what guarantees
+                can a type system actually give you?
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Resources</div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <div class="resource-icon">📗</div>
+                <div class="resource-text">
+                  <strong
+                    >PLAI — Programming Languages: Application and
+                    Interpretation</strong
+                  >
+                  <span
+                    >By Shriram Krishnamurthi. Free online. More accessible
+                    entry point. Read this before TAPL.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://www.plai.org"
+                    target="_blank"
+                    >↗ plai.org (free)</a
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">📘</div>
+                <div class="resource-text">
+                  <strong
+                    >TAPL — Types and Programming Languages — Benjamin
+                    Pierce</strong
+                  >
+                  <span
+                    >The canonical PL theory book. Dense but extraordinary. Go
+                    chapter by chapter; do not rush it.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Project</div>
+            <div class="project-box">
+              <p>
+                Implement a type checker for a small language in Python. Then
+                add Hindley-Milner type inference — the algorithm that powers
+                Haskell and OCaml's type systems. Genuinely difficult and
+                genuinely rewarding.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 5 -->
+      <div class="phase" data-ph="5">
+        <div class="phase-header" onclick="togglePhase(this)">
+          <div class="phase-number">5</div>
+          <div class="phase-title-group">
+            <div class="phase-tag">Application</div>
+            <div class="phase-title">Runtimes & the Full Ecosystem</div>
+          </div>
+          <div class="phase-weeks">6–8 weeks</div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-section-title">Goal</div>
+            <div class="goal-box">
+              <p>
+                Apply everything to the real world. You can now read actual
+                runtime source code and understand it. The Flutter/Dart/iOS
+                ecosystem that originally prompted this roadmap will now have
+                zero gaps.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Central Question</div>
+            <div class="question-box">
+              <span class="question-icon">❓</span>
+              <p>
+                How does the Flutter/Dart/iOS ecosystem work at every layer,
+                with no gaps?
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Resources</div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <div class="resource-icon">🎯</div>
+                <div class="resource-text">
+                  <strong>Dart VM Source & Documentation</strong>
+                  <span
+                    >Read with fresh eyes — it will now be readable. Study the
+                    VM's GC, isolates, and AOT pipeline.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://github.com/dart-lang/sdk"
+                    target="_blank"
+                    >↗ github.com/dart-lang/sdk</a
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">🦋</div>
+                <div class="resource-text">
+                  <strong>Inside Flutter — Flutter Engine Architecture</strong>
+                  <span
+                    >Official deep-dive into how Flutter's rendering pipeline,
+                    text, and platform channels work internally.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://docs.flutter.dev/resources/inside-flutter"
+                    target="_blank"
+                    >↗ docs.flutter.dev/resources/inside-flutter</a
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">♻️</div>
+                <div class="resource-text">
+                  <strong>GC Algorithms</strong>
+                  <span
+                    >Study mark-and-sweep and generational GC. Dart uses both.
+                    After Phase 3 these will make immediate sense.</span
+                  >
+                </div>
+              </div>
+              <div class="resource-item">
+                <div class="resource-icon">🔗</div>
+                <div class="resource-text">
+                  <strong>FFI & Platform Channels</strong>
+                  <span
+                    >How Dart calls C++ which calls the ObjC runtime. Where
+                    abstraction boundaries are drawn and why they exist
+                    there.</span
+                  >
+                  <br /><a
+                    class="resource-link"
+                    href="https://dart.dev/interop/c-interop"
+                    target="_blank"
+                    >↗ dart.dev/interop/c-interop</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="phase-section-title">Project</div>
+            <div class="project-box">
+              <p>
+                Write a garbage collector in Python for your Lox interpreter
+                from Phase 3. Then write a small FFI bridge between Python and a
+                C library. By this point you are building the kinds of things
+                that underpin every language runtime.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- START HERE -->
+    <section class="start-here">
+      <div class="section-label">Where to Begin</div>
+      <div class="start-card">
+        <h2>Start with just two things.</h2>
+        <p>
+          Don't buy everything at once. Begin here. If these click and excite
+          you — and they will — the roadmap is confirmed. Return to this page as
+          you reach each phase.
+        </p>
+        <div class="start-items">
+          <a
+            class="start-item"
+            href="https://www.amazon.com/Code-Language-Computer-Hardware-Software/dp/0137909101"
+            target="_blank"
+          >
+            <span class="start-item-icon">📖</span>
+            <div class="start-item-text">
+              <strong>Code — Charles Petzold</strong>
+              <span>Cheap used copy is perfect</span>
+            </div>
+          </a>
+          <a
+            class="start-item"
+            href="https://www.nand2tetris.org"
+            target="_blank"
+          >
+            <span class="start-item-icon">🖥️</span>
+            <div class="start-item-text">
+              <strong>nand2tetris</strong>
+              <span>Completely free at nand2tetris.org</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      CS Mastery Roadmap &nbsp;·&nbsp; Built for deep understanding, not surface
+      familiarity &nbsp;·&nbsp; 6 phases · 18–24 months
+    </footer>
+
+    <script>
+      function togglePhase(header) {
+        const phase = header.closest(".phase");
+        phase.classList.toggle("open");
+      }
+
+      // Intersection Observer for scroll animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08 },
+      );
+
+      document.querySelectorAll(".phase").forEach((p) => observer.observe(p));
+
+      // Open Phase 0 by default
+      document.querySelector('.phase[data-ph="0"]').classList.add("open");
+    </script>
+  </body>
+</html>
